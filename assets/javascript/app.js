@@ -11,8 +11,12 @@
   var database = firebase.database();
   var name = "";
   var role = "";
-  var startDate = 0;
+  var startDate = "";
+  var monthsWorked = "";
+  var convertedDate = "";
+  var displayMonths = "";
   var monthlyRate = 0;
+  var totalBilled = 0;
 
   $("#submit").on("click", function(event){
 
@@ -21,23 +25,29 @@
   	name = $("#employee-name").val().trim();
   	role = $("#role").val().trim();
   	startDate = $("#start-date").val().trim();
+   	monthsWorked = moment(new Date(startDate));
+   	convertedDate = moment(monthsWorked).diff(moment(), "months");
+   	displayMonths = convertedDate *= -1;
   	monthlyRate = $("#monthly-rate").val().trim();
+  	totalBilled = displayMonths *= monthlyRate;
 
   	database.ref().push({
   		name: name,
   		role: role,
   		startDate: startDate,
+  		monthsWorked: displayMonths,
   		monthlyRate: monthlyRate,
+  		totalBilled: totalBilled,
   		dateAdded: firebase.database.ServerValue.TIMESTAMP
 
   	});
 
-  	console.log(database);
+  	console.log(moment(convertedDate).diff(moment(), "months"));
 
   });
 
   database.ref().orderByChild("dateAdded").on("child_added", function(snapshot){
 
-  		$(".table").append("<tr><td>" + snapshot.val().name + "</td><td>" + snapshot.val().role + "</td><td>" +  snapshot.val().startDate + "</td><td>" + snapshot.val().monthlyRate + "</td></tr>");
+  		$(".table").append("<tr><td>" + snapshot.val().name + "</td><td>" + snapshot.val().role + "</td><td>" +  snapshot.val().startDate + "</td><td>" + snapshot.val().monthsWorked + "</td><td>" + snapshot.val().monthlyRate + "</td><td>" + snapshot.val().totalBilled +"</td></tr>");
 
   });
