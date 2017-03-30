@@ -29,7 +29,12 @@
    	convertedDate = moment(monthsWorked).diff(moment(), "months");
    	displayMonths = convertedDate *= -1;
   	monthlyRate = $("#monthly-rate").val().trim();
-  	totalBilled = displayMonths *= monthlyRate;
+  	totalBilled = (displayMonths * monthlyRate);
+
+  	console.log(displayMonths);
+  	console.log(monthlyRate);
+  	console.log(totalBilled);
+  	
 
   	database.ref().push({
   		name: name,
@@ -42,7 +47,7 @@
 
   	});
 
-  	console.log(moment(convertedDate).diff(moment(), "months"));
+  	// console.log(moment(convertedDate).diff(moment(), "months"));
 
   });
 
